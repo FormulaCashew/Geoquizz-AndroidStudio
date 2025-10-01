@@ -1,23 +1,25 @@
 package com.example.geoquizz.data
 
+import android.app.Application
+import androidx.databinding.tool.util.Resources
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ContentViewModel : ViewModel() {
-    private val _index = MutableStateFlow(0)
-    val index : StateFlow<Int> = _index.asStateFlow()
+class ContentViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _ans_count = MutableStateFlow(0)
-    val ans_count : StateFlow<Int> = _ans_count.asStateFlow()
+    private val questions: List<Questions>
 
-    fun increment_index(){
-        _index.update { index -> index +1 }
+
+    init {
+        questions = loadQuestions()
     }
 
-    fun increment_ans_count(){
-        _index.update { _ans_count -> _ans_count +1 }
+    private fun loadQuestions(){
+        val stringArr = getApplication<Application>().Resources.getStringArray
     }
+
 }
