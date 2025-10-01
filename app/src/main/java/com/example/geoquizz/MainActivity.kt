@@ -70,16 +70,18 @@ fun Geoquizz(viewModel: ContentViewModel = viewModel()){
 
 @Composable
 fun AnswerButtons(viewModel: ContentViewModel){
-    Row {
+    Row (
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ){
         Button(
             modifier = Modifier,
-            onClick = {}//TODO
+            onClick = {viewModel.checkAns(false)}//TODO
         ) {
             Text("False")
         }
         Button(
             modifier = Modifier,
-            onClick = {}//TODO
+            onClick = {viewModel.checkAns(true)}//TODO
         ) {
             Text("True")
         }
