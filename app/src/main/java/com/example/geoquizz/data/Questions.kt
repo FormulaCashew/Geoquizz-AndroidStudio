@@ -1,4 +1,6 @@
 package com.example.geoquizz.data
 
-class Questions {
-}
+data class Question(
+    val text: String,
+    val answer: Boolean
+)
