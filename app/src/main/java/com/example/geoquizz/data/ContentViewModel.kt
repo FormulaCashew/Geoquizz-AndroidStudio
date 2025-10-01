@@ -56,5 +56,16 @@ class ContentViewModel(application: Application) : AndroidViewModel(application)
             )
         }
     }
+
+    fun prevQuest(){ // almost same as next quest
+        _uiState.update { currentState->
+            val total = questions.size
+            val prevIndex = (currentState.currQuesIndex - 1) % total
+            currentState.copy(
+                currQuesIndex = prevIndex,
+                currQuesText = getQuestText(questions[prevIndex].textRes)
+            )
+        }
+    }
 }
 
