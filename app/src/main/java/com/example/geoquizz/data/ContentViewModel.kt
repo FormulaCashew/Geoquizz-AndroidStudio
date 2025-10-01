@@ -10,18 +10,18 @@ import kotlinx.coroutines.flow.update
 
 class ContentViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val questions = questionBank //list of questions
-    private val CorrectAnsweredIDs = mutableSetOf<Int>() //which ones are correct
+    private val question = questionBank //list of questions
+    private val correctAnsweredIDs = mutableSetOf<Int>() //which ones are correct
 
-    private val _uiState: MutableStateFlow<QuizStateUI> //save state
-    val uiState: StateFlow<QuizStateUI> // keep track of ui
+    private val _uiState: MutableStateFlow<QuizUIState> //save state
+    val uiState: StateFlow<QuizUIState> // keep track of ui
 
     init {
-        val firstQuestTxt = getQuestText(questions.first().textRes)
+        val firstQuestTxt = getQuestText(question.first().textRes)
         _uiState = MutableStateFlow(
-            QuizStateUI(
+            QuizUIState(
                 firstQuestTxt,
-                questions.size
+                question.size
             )
         )
         uiState = _uiState.asStateFlow()
@@ -34,11 +34,11 @@ class ContentViewModel(application: Application) : AndroidViewModel(application)
     fun checkAns(usrAns: Boolean) {
         val currState = _uiState.value //get new value
         val currIndex = currState.currQuesIndex
-        val currQuest = questions[currIndex]
+        val currQuest = question[currIndex]
 
         val isCorr = usrAns == currQuest.answer // check if answer is correct
-        if (isCorr && !CorrectAnsweredIDs.contains(currQuest.id)) { // only count once
-            CorrectAnsweredIDs.add(currQuest.id)
+        if (isCorr && !correctAnsweredIDs.contains(currQuest.id)) { // only count once
+            correctAnsweredIDs.add(currQuest.id)
             _uiState.update {
                 it.copy(score = it.score + 1)
             } //award a point and save
@@ -48,22 +48,22 @@ class ContentViewModel(application: Application) : AndroidViewModel(application)
 
     fun nextQuest(){
         _uiState.update { currentState->
-            val total = questions.size
+            val total = question.size
             val nextIndex = (currentState.currQuesIndex + 1) % total
             currentState.copy(
                 currQuesIndex = nextIndex,
-                currQuesText = getQuestText(questions[nextIndex].textRes)
+                currQuesText = getQuestText(question[nextIndex].textRes)
             )
         }
     }
 
     fun prevQuest(){ // almost same as next quest
         _uiState.update { currentState->
-            val total = questions.size
+            val total = question.size
             val prevIndex = (currentState.currQuesIndex - 1) % total
             currentState.copy(
                 currQuesIndex = prevIndex,
-                currQuesText = getQuestText(questions[prevIndex].textRes)
+                currQuesText = getQuestText(question[prevIndex].textRes)
             )
         }
     }
