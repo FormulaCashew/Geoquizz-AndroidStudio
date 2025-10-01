@@ -48,4 +48,15 @@ class ContentViewModelUnitTest {
         assertEquals(1, finalState.currQuesIndex)
         assertEquals(1, finalState.score)
     }
+
+    @Test
+    fun checkAns_correctAnswerGivenTwice_scoreIncrementsOnlyOnce() {
+        viewModel.checkAns(true)
+        viewModel.nextQuest()
+        viewModel.prevQuest()
+        viewModel.checkAns(true)
+
+        //Check if correct ans is saved
+        assertEquals(1, viewModel.uiState.value.score)
+    }
 }
