@@ -74,13 +74,13 @@ fun AnswerButtons(viewModel: ContentViewModel){
     ){
         Button(
             modifier = Modifier,
-            onClick = {viewModel.checkAns(false)}//TODO
+            onClick = {viewModel.checkAns(false)}
         ) {
             Text("False")
         }
         Button(
             modifier = Modifier,
-            onClick = {viewModel.checkAns(true)}//TODO
+            onClick = {viewModel.checkAns(true)}
         ) {
             Text("True")
         }
@@ -92,7 +92,7 @@ fun IndexButtons(viewModel: ContentViewModel, currentIndex: Int, totalQuestions:
     Row {
         Button(
             modifier = Modifier,
-            onClick = { viewModel.prevQuest() }//TODO
+            onClick = { viewModel.prevQuest() }
         ) {
             Text("Prev")
             Icon(
@@ -106,7 +106,7 @@ fun IndexButtons(viewModel: ContentViewModel, currentIndex: Int, totalQuestions:
         )
         Button(
             modifier = Modifier,
-            onClick = { viewModel.nextQuest() }//TODO
+            onClick = { viewModel.nextQuest() }
         ) {
             Text("Next")
             Icon(
