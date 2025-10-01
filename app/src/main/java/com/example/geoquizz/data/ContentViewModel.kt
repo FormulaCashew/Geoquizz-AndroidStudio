@@ -2,8 +2,7 @@ package com.example.geoquizz.data
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.room.util.copy
+import com.example.geoquizz.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +39,21 @@ class ContentViewModel(application: Application) : AndroidViewModel(application)
         val isCorr = usrAns == currQuest.answer // check if answer is correct
         if (isCorr && !CorrectAnsweredIDs.contains(currQuest.id)) { // only count once
             CorrectAnsweredIDs.add(currQuest.id)
-            _uiState.update { it.copy(score = it.score + 1) } //award a point and save
+            _uiState.update {
+                it.copy(score = it.score + 1)
+            } //award a point and save
+        }
+
+    }
+
+    fun nextQuest(){
+        _uiState.update { currentState->
+            val total = questions.size
+            val nextIndex = (currentState.currQuesIndex + 1) % total
+            currentState.copy(
+                currQuesIndex = nextIndex,
+                currQuesText = getQuestText(questions[nextIndex].textRes)
+            )
         }
     }
 }
