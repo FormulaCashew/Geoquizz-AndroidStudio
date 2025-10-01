@@ -14,8 +14,8 @@ class ContentViewModel(application: Application) : AndroidViewModel(application)
     private val questions = questionBank //list of questions
     private val CorrectAnsweredIDs = mutableSetOf<Int>() //which ones are correct
 
-    private val _uiState : MutableStateFlow<QuizStateUI> //save state
-    val uiState : StateFlow<QuizStateUI> // keep track of ui
+    private val _uiState: MutableStateFlow<QuizStateUI> //save state
+    val uiState: StateFlow<QuizStateUI> // keep track of ui
 
     init {
         val firstQuestTxt = getQuestText(questions.first().textRes)
@@ -28,16 +28,20 @@ class ContentViewModel(application: Application) : AndroidViewModel(application)
         uiState = _uiState.asStateFlow()
     }
 
-    private fun getQuestText(resId: Int): String{
+    private fun getQuestText(resId: Int): String {
         return getApplication<Application>().getString(resId)
     }
 
-    fun checkAns(usrAns: Boolean){
+    fun checkAns(usrAns: Boolean) {
         val currState = _uiState.value //get new value
         val currIndex = currState.currQuesIndex
         val currQuest = questions[currIndex]
 
         val isCorr = usrAns == currQuest.answer // check if answer is correct
-
+        if (isCorr && !CorrectAnsweredIDs.contains(currQuest.id)) { // only count once
+            CorrectAnsweredIDs.add(currQuest.id)
+            _uiState.update { it.copy(score = it.score + 1) } //award a point and save
+        }
     }
 }
+
