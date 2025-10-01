@@ -1,6 +1,5 @@
 package com.example.geoquizz
 
-import android.R.color.black
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,8 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -41,7 +38,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Geoquizz(viewModel: ContentViewModel = viewModel()){
+fun Geoquizz(){
+    val viewModel: ContentViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     Surface(modifier = Modifier
@@ -55,6 +53,7 @@ fun Geoquizz(viewModel: ContentViewModel = viewModel()){
             //questions
             Text(
                 text = uiState.currQuesText,
+//                text = "Build",
                 color = Color.White,
                 fontSize = 24.sp
             )
@@ -63,7 +62,7 @@ fun Geoquizz(viewModel: ContentViewModel = viewModel()){
                 text = "Score: ${uiState.score} / ${uiState.totalQues} "
             )
             AnswerButtons(viewModel = viewModel)
-            IndexButtons(viewModel = viewModel)
+            IndexButtons(viewModel = viewModel, currentIndex = uiState.currQuesIndex, totalQuestions = uiState.totalQues)
         }
     }
 }
@@ -89,21 +88,27 @@ fun AnswerButtons(viewModel: ContentViewModel){
 }
 
 @Composable
-fun IndexButtons(viewModel: ContentViewModel){
+fun IndexButtons(viewModel: ContentViewModel, currentIndex: Int, totalQuestions: Int){
     Row {
         Button(
             modifier = Modifier,
-            onClick = {}//TODO
+            onClick = { viewModel.prevQuest() }//TODO
         ) {
+            Text("Prev")
             Icon(
                 painter = painterResource(R.drawable.arrow_back_ios_24),
                 contentDescription = "Previous Question"
             )
         }
+        Text(
+            text = "Q: ${currentIndex + 1}/${totalQuestions}",
+            color = Color.White
+        )
         Button(
             modifier = Modifier,
-            onClick = {}//TODO
+            onClick = { viewModel.nextQuest() }//TODO
         ) {
+            Text("Next")
             Icon(
                 painter = painterResource(R.drawable.arrow_forward_ios_24),
                 contentDescription = "Next Question"
