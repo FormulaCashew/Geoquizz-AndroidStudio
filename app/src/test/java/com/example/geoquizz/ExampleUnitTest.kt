@@ -59,4 +59,11 @@ class ContentViewModelUnitTest {
         //Check if correct ans is saved
         assertEquals(1, viewModel.uiState.value.score)
     }
+    @Test
+    fun checkAns_correctThenIncorrectAnswer_scoreIncrementsOnlyOnce() {
+        viewModel.checkAns(true)
+        viewModel.checkAns(true)
+
+        assertEquals(1, viewModel.uiState.value.score)
+    }
 }
