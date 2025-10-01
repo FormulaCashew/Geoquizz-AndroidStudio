@@ -58,13 +58,18 @@ fun Geoquizz(viewModel: ContentViewModel = viewModel()){
                 color = Color.White,
                 fontSize = 24.sp
             )
-            AnswerButtons()
+            //Score
+            Text(
+                text = "Score: ${uiState.score} / ${uiState.totalQues} "
+            )
+            AnswerButtons(viewModel = viewModel)
+            IndexButtons(viewModel = viewModel)
         }
     }
 }
 
 @Composable
-fun AnswerButtons(){
+fun AnswerButtons(viewModel: ContentViewModel){
     Row {
         Button(
             modifier = Modifier,
@@ -82,7 +87,7 @@ fun AnswerButtons(){
 }
 
 @Composable
-fun IndexButtons(){
+fun IndexButtons(viewModel: ContentViewModel){
     Row {
         Button(
             modifier = Modifier,
