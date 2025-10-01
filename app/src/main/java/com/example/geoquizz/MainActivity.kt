@@ -76,7 +76,7 @@ fun IndexButtons(){
     Row {
         Button(
             modifier = Modifier,
-            onClick = {increment_index()}
+            onClick = {}
         ) {
             Icon(
                 painter = painterResource(R.drawable.arrow_back_ios_24),
