@@ -37,5 +37,15 @@ class ContentViewModelUnitTest {
         assertEquals(initialIndex + 1, newIndex)
         assertEquals(1, newIndex)
     }
+    @Test
+    fun checkAns_stateIsPersistedAfterMove() {
 
+        viewModel.checkAns(true)
+
+        val finalState = viewModel.uiState.value
+
+        //Check if value is saved
+        assertEquals(1, finalState.currQuesIndex)
+        assertEquals(1, finalState.score)
+    }
 }
