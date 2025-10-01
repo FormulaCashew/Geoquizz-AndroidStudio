@@ -58,13 +58,13 @@ fun AnswerButtons(){
     Row {
         Button(
             modifier = Modifier,
-            onClick = {}
+            onClick = {}//TODO
         ) {
             Text("False")
         }
         Button(
             modifier = Modifier,
-            onClick = {}
+            onClick = {}//TODO
         ) {
             Text("True")
         }
@@ -76,7 +76,7 @@ fun IndexButtons(){
     Row {
         Button(
             modifier = Modifier,
-            onClick = {}
+            onClick = {}//TODO
         ) {
             Icon(
                 painter = painterResource(R.drawable.arrow_back_ios_24),
@@ -85,7 +85,7 @@ fun IndexButtons(){
         }
         Button(
             modifier = Modifier,
-            onClick = {}
+            onClick = {}//TODO
         ) {
             Icon(
                 painter = painterResource(R.drawable.arrow_forward_ios_24),
