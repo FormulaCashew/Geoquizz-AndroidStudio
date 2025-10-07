@@ -51,8 +51,14 @@ class ContentViewModel(private val questions: List<Question> = questionBank) : V
         val isCorr = usrAns == currQuest.answer
         if (isCorr && !correctAnsweredIDs.contains(currQuest.id)) {
             correctAnsweredIDs.add(currQuest.id)
-            _uiState.update { it.copy(score = it.score + 1) }
+            _uiState.update { it.copy(score = it.score + 1, lastAnswerCorrect = true) }
+        } else {
+            _uiState.update { it.copy(lastAnswerCorrect = false) }
         }
+    }
+
+    fun resetAnswerState() {
+        _uiState.update { it.copy(lastAnswerCorrect = null) }
     }
 
     fun nextQuest() {
