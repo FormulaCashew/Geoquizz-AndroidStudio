@@ -50,4 +50,12 @@ class ContentViewModelTest  {
         val afterSecond = viewModel.uiState.value.score
         assertEquals(1, afterSecond)
     }
+
+    @Test
+    fun checkAns_incorrectAnswer_doesNotIncrementScore() {
+        val firstQuestion = questionBank[0]
+        viewModel.checkAns(!firstQuestion.answer)
+        val score = viewModel.uiState.value.score
+        assertEquals(0, score)
+    }
 }
