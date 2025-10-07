@@ -1,69 +1,64 @@
 package com.example.geoquizz.data
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.ViewModel
 import com.example.geoquizz.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import androidx.compose.runtime.collectAsState
 
-class ContentViewModel(application: Application) : AndroidViewModel(application) {
+class ContentViewModel(private val questions: List<Question> = questionBank) : ViewModel() {
 
     private val question = questionBank //list of questions
     private val correctAnsweredIDs = mutableSetOf<Int>() //which ones are correct
 
-    private val _uiState: MutableStateFlow<QuizUIState> //save state
-    val uiState: StateFlow<QuizUIState> // keep track of ui
-
-    init {
-        val firstQuestTxt = getQuestText(question.first().textRes)
-        _uiState = MutableStateFlow(
-            QuizUIState(
-                firstQuestTxt,
-                question.size
-            )
+    private val _uiState = MutableStateFlow(
+        QuizUIState(
+            currQuesText = questions.first().textRes.toString(), // temporarily show text ID as string
+            currQuesIndex = 0,
+            totalQues = questions.size
         )
-        uiState = _uiState.asStateFlow()
-    }
+    ) //save state
+    val uiState: StateFlow<QuizUIState> = _uiState.asStateFlow()
 
-    private fun getQuestText(resId: Int): String {
-        return getApplication<Application>().getString(resId)
+    fun setQuestionTextResolver(resolver: (Int) -> String) {
+        // This allows MainActivity to provide string lookup via resources
+        val text = resolver(questions[_uiState.value.currQuesIndex].textRes)
+        _uiState.update { it.copy(currQuesText = text) }
     }
 
     fun checkAns(usrAns: Boolean) {
-        val currState = _uiState.value //get new value
+        val currState = _uiState.value
         val currIndex = currState.currQuesIndex
-        val currQuest = question[currIndex]
+        val currQuest = questions[currIndex]
 
-        val isCorr = usrAns == currQuest.answer // check if answer is correct
-        if (isCorr && !correctAnsweredIDs.contains(currQuest.id)) { // only count once
+        val isCorr = usrAns == currQuest.answer
+        if (isCorr && !correctAnsweredIDs.contains(currQuest.id)) {
             correctAnsweredIDs.add(currQuest.id)
-            _uiState.update {
-                it.copy(score = it.score + 1)
-            } //award a point and save
+            _uiState.update { it.copy(score = it.score + 1) }
         }
-
     }
 
-    fun nextQuest(){
-        _uiState.update { currentState->
-            val total = question.size
-            val nextIndex = (currentState.currQuesIndex + 1) % total
-            currentState.copy(
+    fun nextQuest() {
+        _uiState.update { current ->
+            val total = questions.size
+            val nextIndex = (current.currQuesIndex + 1) % total
+            current.copy(
                 currQuesIndex = nextIndex,
-                currQuesText = getQuestText(question[nextIndex].textRes)
+                currQuesText = questions[nextIndex].textRes.toString() // placeholder
             )
         }
     }
 
-    fun prevQuest(){ // almost same as next quest
-        _uiState.update { currentState->
-            val total = question.size
-            val prevIndex = (currentState.currQuesIndex - 1) % total
-            currentState.copy(
+    fun prevQuest() {
+        _uiState.update { current ->
+            val total = questions.size
+            val prevIndex = if (current.currQuesIndex - 1 < 0) total - 1 else current.currQuesIndex - 1
+            current.copy(
                 currQuesIndex = prevIndex,
-                currQuesText = getQuestText(question[prevIndex].textRes)
+                currQuesText = questions[prevIndex].textRes.toString() // placeholder
             )
         }
     }
