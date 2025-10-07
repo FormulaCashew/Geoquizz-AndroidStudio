@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun Geoquizz(){
     val viewModel: ContentViewModel = viewModel()
@@ -47,6 +48,18 @@ fun Geoquizz(){
     LaunchedEffect(Unit) {
         viewModel.setQuestionTextResolver { resId ->
             context.getString(resId)
+        }
+    }
+
+    LaunchedEffect(uiState.lastAnswerCorrect) {
+        uiState.lastAnswerCorrect?.let { correct ->
+            val messageRes = if (correct) R.string.correct_toast else R.string.incorrect_toast
+            android.widget.Toast.makeText(
+                context,
+                context.getString(messageRes),
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
+            viewModel.resetAnswerState() // prevent repeated toasts
         }
     }
 
