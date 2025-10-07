@@ -31,6 +31,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    // Although deprecated it's still necessary for a successful compilation
     kotlinOptions {
         jvmTarget = "11"
         freeCompilerArgs += "-Xlambdas=class"

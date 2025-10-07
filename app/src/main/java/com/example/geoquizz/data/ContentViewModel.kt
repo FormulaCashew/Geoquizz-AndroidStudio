@@ -1,17 +1,12 @@
 package com.example.geoquizz.data
 
-import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
-import com.example.geoquizz.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import androidx.compose.runtime.collectAsState
 
 class ContentViewModel(private val questions: List<Question> = questionBank) : ViewModel() {
-
-    private val question = questionBank //list of questions
     private val correctAnsweredIDs = mutableSetOf<Int>() //which ones are correct
     private var textResolver: ((Int) -> String)? = null
     private val _uiState = MutableStateFlow(
