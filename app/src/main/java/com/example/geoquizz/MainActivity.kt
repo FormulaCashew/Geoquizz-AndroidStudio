@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,6 +42,13 @@ class MainActivity : ComponentActivity() {
 fun Geoquizz(){
     val viewModel: ContentViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
+    val context = androidx.compose.ui.platform.LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.setQuestionTextResolver { resId ->
+            context.getString(resId)
+        }
+    }
 
     Surface(modifier = Modifier
         .fillMaxSize(),
