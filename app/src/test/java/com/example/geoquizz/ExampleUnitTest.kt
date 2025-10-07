@@ -58,4 +58,12 @@ class ContentViewModelTest  {
         val score = viewModel.uiState.value.score
         assertEquals(0, score)
     }
+
+    @Test
+    fun nextAndPrev_changeQuestionTextPlaceholder() {
+        val initialText = viewModel.uiState.value.currQuesText
+        viewModel.nextQuest()
+        val nextText = viewModel.uiState.value.currQuesText
+        assertNotEquals(initialText, nextText)
+    }
 }
