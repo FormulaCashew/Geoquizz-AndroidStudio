@@ -11,8 +11,6 @@ composeBom = "2024.09.00"
 databindingCompiler = "8.13.0"
 roomKtx = "2.8.1"
 lifecycle-viewmodel-compose = "2.9.4"
-androidx-test-core = "1.7.0"
-robolectric = "4.16"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
