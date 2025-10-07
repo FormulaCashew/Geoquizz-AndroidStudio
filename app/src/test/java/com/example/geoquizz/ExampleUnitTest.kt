@@ -38,4 +38,16 @@ class ContentViewModelTest  {
         val newIndex = viewModel.uiState.value.currQuesIndex
         assertEquals(questionBank.size - 1, newIndex)
     }
+
+    @Test
+    fun checkAns_correctAnswer_incrementsScoreOnce() {
+        // Answer same question correctly again — should not increase score
+        val firstQuestion = questionBank[0]
+        viewModel.checkAns(firstQuestion.answer)
+        val afterFirst = viewModel.uiState.value.score
+        assertEquals(1, afterFirst)
+        viewModel.checkAns(firstQuestion.answer)
+        val afterSecond = viewModel.uiState.value.score
+        assertEquals(1, afterSecond)
+    }
 }
