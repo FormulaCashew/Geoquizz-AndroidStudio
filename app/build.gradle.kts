@@ -38,6 +38,21 @@ android {
     buildFeatures {
         compose = true
     }
+
+    packaging {
+        resources {
+            excludes.addAll(
+                setOf(
+                    "META-INF/LICENSE.md",
+                    "META-INF/LICENSE.txt",
+                    "META-INF/NOTICE.md",
+                    "META-INF/NOTICE.txt",
+                    "META-INF/DEPENDENCIES",
+                    "META-INF/*.kotlin_module"
+                )
+            )
+        }
+    }
 }
 
 dependencies {
