@@ -13,7 +13,7 @@ class ContentViewModel(private val questions: List<Question> = questionBank) : V
 
     private val question = questionBank //list of questions
     private val correctAnsweredIDs = mutableSetOf<Int>() //which ones are correct
-
+    private var textResolver: ((Int) -> String)? = null
     private val _uiState = MutableStateFlow(
         QuizUIState(
             currQuesText = questions.first().textRes.toString(), // temporarily show text ID as string
@@ -24,8 +24,22 @@ class ContentViewModel(private val questions: List<Question> = questionBank) : V
     val uiState: StateFlow<QuizUIState> = _uiState.asStateFlow()
 
     fun setQuestionTextResolver(resolver: (Int) -> String) {
-        // This allows MainActivity to provide string lookup via resources
-        val text = resolver(questions[_uiState.value.currQuesIndex].textRes)
+        textResolver = resolver
+        // Immediately update the current question text
+        updateCurrentQuestionText()
+    }
+
+    private fun updateCurrentQuestionText() {
+        val index = _uiState.value.currQuesIndex
+        val resolver = textResolver
+        val question = questions[index]
+
+        val text = if (resolver != null) {
+            resolver(question.textRes)
+        } else {
+            question.textRes.toString() // fallback placeholder
+        }
+
         _uiState.update { it.copy(currQuesText = text) }
     }
 
@@ -50,6 +64,7 @@ class ContentViewModel(private val questions: List<Question> = questionBank) : V
                 currQuesText = questions[nextIndex].textRes.toString() // placeholder
             )
         }
+        updateCurrentQuestionText()
     }
 
     fun prevQuest() {
@@ -61,6 +76,7 @@ class ContentViewModel(private val questions: List<Question> = questionBank) : V
                 currQuesText = questions[prevIndex].textRes.toString() // placeholder
             )
         }
+        updateCurrentQuestionText()
     }
 }
 
